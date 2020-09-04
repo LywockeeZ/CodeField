@@ -28,8 +28,6 @@ int main()
     hh = 0, tt = -1;
     for(int i = 0; i < n; i++) 
     {
-        scanf("%d", &a[i]);
-
         if(hh <= tt && i - k + 1 > q[hh]) hh++;
 
         while(hh <= tt && a[q[tt]] <= a[i]) tt--;
