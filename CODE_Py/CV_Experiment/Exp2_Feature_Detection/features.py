@@ -120,21 +120,24 @@ class HarrisKeypointDetector(KeypointDetector):
         # for direction on how to do this. Also compute an orientation
         # for each pixel and store it in 'orientationImage.'
         # TODO-BLOCK-BEGIN
-        raise Exception("TODO in features.py not implemented")
+        
         #计算梯度
-        dx = ndimage.sobel(srcImage, 1, mode='reflect')
-        dy = ndimage.sobel(srcImage, 0, mode='reflect')
-        #计算矩阵M的每个分量
+        dx = ndimage.sobel(srcImage, 1, mode='reflect') #水平方向导数
+        dy = ndimage.sobel(srcImage, 0, mode='reflect') #垂直方向导数
+        theta = np.degrees(np.arctan2(dy, dx))          #计算梯度方向的度数
+
+        #计算矩阵H的每个分量
         Ixx = ndimage.gaussian_filter(dx * dx, 0.5)
         Iyy = ndimage.gaussian_filter(dy * dy, 0.5)
         Ixy = ndimage.gaussian_filter(dx * dy, 0.5)
+
         #计算矩阵的行列式，迹和响应强度
         det_H = Ixx * Iyy - Ixy ** 2
         trace_H = Ixx + Iyy
-        R = det_H + 0.1 * trace_H ** 2
+        R = det_H - 0.1 * trace_H ** 2
 
         harrisImage = R
-
+        orientationImage = theta
         # TODO-BLOCK-END
 
         # Save the harris image as harris.png for the website assignment
@@ -157,7 +160,15 @@ class HarrisKeypointDetector(KeypointDetector):
 
         # TODO 2: Compute the local maxima image
         # TODO-BLOCK-BEGIN
-        raise Exception("TODO in features.py not implemented")
+               
+        #用最大过滤器获得7x7领域最大值的图像
+        localMaxImage = ndimage.filters.maximum_filter(harrisImage, (7,7))
+
+        #通过比较获得局部最大值的布尔图像
+        for i in range(harrisImage.shape[0]):
+            for j in range(harrisImage.shape[1]):
+                destImage[i][j] = (harrisImage[i][j] == localMaxImage[i][j])
+
         # TODO-BLOCK-END
 
         return destImage
@@ -205,7 +216,12 @@ class HarrisKeypointDetector(KeypointDetector):
                 # f.angle to the orientation in degrees and f.response to
                 # the Harris score
                 # TODO-BLOCK-BEGIN
-                raise Exception("TODO in features.py not implemented")
+                
+                f.size = 10
+                f.pt = (x, y)
+                f.angle = orientationImage[y, x] 
+                f.response = harrisImage[y, x]
+
                 # TODO-BLOCK-END
 
                 features.append(f)
@@ -268,7 +284,10 @@ class SimpleFeatureDescriptor(FeatureDescriptor):
             # sampled centered on the feature point. Store the descriptor
             # as a row-major vector. Treat pixels outside the image as zero.
             # TODO-BLOCK-BEGIN
-            raise Exception("TODO in features.py not implemented")
+            
+            #将原数组四周边缘各拓展2，取5x5切片，改为元素为25的行向量。numpy中(m,)为含m个元素的行向量
+            desc[i, : ] = np.pad(grayImage, ((2, 2), (2, 2)), 'constant')[y:y+5, x:x+5].reshape((25,))
+
             # TODO-BLOCK-END
 
         return desc
@@ -304,7 +323,31 @@ class MOPSFeatureDescriptor(FeatureDescriptor):
             transMx = np.zeros((2, 3))
 
             # TODO-BLOCK-BEGIN
-            raise Exception("TODO in features.py not implemented")
+            
+            posX, posY = f.pt
+            #角度转弧度，变换中是反方向旋转，所以要加负号
+            rad = -np.radians(f.angle)
+
+            t1 = np.array([[1, 0, -posX],
+                           [0, 1, -posY],
+                           [0, 0,   1  ]])
+
+            r  = np.array([[math.cos(rad), -math.sin(rad), 0],
+                           [math.sin(rad),  math.cos(rad), 0],
+                           [0            ,  0            , 1]])
+
+            s  = np.array([[0.2, 0  , 0],
+                           [0  , 0.2, 0],
+                           [0  , 0  , 1]])
+            #cv2.warpAffine从(0,0)开始取8x8，所以应平移到(4,4)
+            t2 = np.array([[1, 0, 4],
+                           [0, 1, 4],
+                           [0, 0, 1]])
+            #得到变换矩阵
+            trans = np.dot(np.dot(np.dot(t2, s), r),t1)
+            #仿射变换齐次坐标最后一行一定是(0,0,1),直接取切片
+            transMx = trans[:2, :3]
+
             # TODO-BLOCK-END
 
             # Call the warp affine function to do the mapping
@@ -316,7 +359,16 @@ class MOPSFeatureDescriptor(FeatureDescriptor):
             # variance. If the variance is zero then set the descriptor
             # vector to zero. Lastly, write the vector to desc.
             # TODO-BLOCK-BEGIN
-            raise Exception("TODO in features.py not implemented")
+            
+            #对特征描述符标准化：（数据-均值）/方差
+            normalized = destImage - np.mean(destImage)
+            variance = np.std(destImage)
+            if variance < 1e-5:
+                desc[i, : ] = np.zeros((windowSize * windowSize,))
+            else:
+                normalized = normalized / variance
+                desc[i, : ] = normalized.reshape(windowSize * windowSize,)
+
             # TODO-BLOCK-END
 
         return desc
@@ -442,7 +494,15 @@ class SSDFeatureMatcher(FeatureMatcher):
         # Note: multiple features from the first image may match the same
         # feature in the second image.
         # TODO-BLOCK-BEGIN
-        raise Exception("TODO in features.py not implemented")
+
+        #比较两个集合的距离，metric为比较方式，euclidean为欧式距离
+        dis = scipy.spatial.distance.cdist(desc1, desc2, metric='euclidean')
+        for i, value in enumerate(dis):
+            queryIdx = i
+            trainIdx = np.argmin(value)
+            matchPair = cv2.DMatch(queryIdx, trainIdx, value[trainIdx])
+            matches.append(matchPair)
+
         # TODO-BLOCK-END
 
         return matches
@@ -484,7 +544,21 @@ class RatioFeatureMatcher(FeatureMatcher):
         # feature in the second image.
         # You don't need to threshold matches in this function
         # TODO-BLOCK-BEGIN
-        raise Exception("TODO in features.py not implemented")
+        
+        dis = scipy.spatial.distance.cdist(desc1, desc2, metric='euclidean')
+        for i, value in enumerate(dis):
+            queryIdx = i
+            #找到最小的下标
+            trainIdx1 = np.argmin(value)
+            #将最小的元素删除
+            temp = np.delete(value, trainIdx1)
+            #找到次小的下标
+            trainIdx2 = np.argmin(temp)
+            #计算比率
+            ratio = value[trainIdx1] / value[trainIdx2]
+            matchPair = cv2.DMatch(queryIdx, trainIdx1, ratio)
+            matches.append(matchPair)
+
         # TODO-BLOCK-END
 
         return matches
