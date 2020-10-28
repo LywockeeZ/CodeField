@@ -121,6 +121,20 @@ class HarrisKeypointDetector(KeypointDetector):
         # for each pixel and store it in 'orientationImage.'
         # TODO-BLOCK-BEGIN
         raise Exception("TODO in features.py not implemented")
+        #计算梯度
+        dx = ndimage.sobel(srcImage, 1, mode='reflect')
+        dy = ndimage.sobel(srcImage, 0, mode='reflect')
+        #计算矩阵M的每个分量
+        Ixx = filters.gaussian_filter(dx * dx, 0.5)
+        Iyy = filters.gaussian_filter(dy * dy, 0.5)
+        Ixy = filters.gaussian_filter(dx * dy, 0.5)
+        #计算矩阵的行列式，迹和响应强度
+        det_H = Ixx * Iyy - Ixy ** 2
+        trace_H = Ixx + Iyy
+        R = det_H + 0.1 * trace_H ** 2
+
+        harrisImage = R
+
         # TODO-BLOCK-END
 
         # Save the harris image as harris.png for the website assignment
