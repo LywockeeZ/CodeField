@@ -138,6 +138,7 @@ class HarrisKeypointDetector(KeypointDetector):
 
         harrisImage = R
         orientationImage = theta
+        
         # TODO-BLOCK-END
 
         # Save the harris image as harris.png for the website assignment
@@ -160,7 +161,7 @@ class HarrisKeypointDetector(KeypointDetector):
 
         # TODO 2: Compute the local maxima image
         # TODO-BLOCK-BEGIN
-               
+        
         #用最大过滤器获得7x7领域最大值的图像
         localMaxImage = ndimage.filters.maximum_filter(harrisImage, (7,7))
 
@@ -168,7 +169,45 @@ class HarrisKeypointDetector(KeypointDetector):
         for i in range(harrisImage.shape[0]):
             for j in range(harrisImage.shape[1]):
                 destImage[i][j] = (harrisImage[i][j] == localMaxImage[i][j])
+        
+        '''
+        ###########实现自适应非最大抑制
+        ##第一步：寻找全局最大的角点响应值，即fmax=max(f)。
+        f = harrisImage.copy()
+        fmax = np.argmax(f)
 
+        ##第二步：遍历N个角点，计算满足条件的ri用向量r存储
+        r = np.zeros_like(f)
+        for i in range(f.shape[0]):
+            for j in range(f.shape[1]):
+                if f[i][j] > fmax * 0.9 :
+                    r[i][j] = 0x3fffffff
+                else:
+                    temp = 0.9 * f
+                    d = []                 
+                    for k in range(temp.shape[0]):
+                        for l in range(temp.shape[1]):
+                            print("In")
+                            #if f[i][j] < 0.9 * temp[k][l]:
+                            #d.append(math.sqrt((i-k)**2 + (j-l)**2))  
+                    r[i][j] = 0x3fffffff                
+                    #r[i][j] = d[np.argmin(d)]
+        
+        ##第三步：将向量r按照降序排列，取前500个ri对应的点作为MOPS的特征点
+        t = []
+        for i in range(r.shape[0]):
+            for j in range(r.shape[1]):
+                t.append((i,j,r[i][j]))
+        #根据角点强度排序
+        sorted(t, key=lambda res: res[2], reverse=True)
+        #将前500个角点设置为局部最大角点
+        for cnt in range(500):
+            for i,j,k in t:
+                if k == 0x3fffffff:
+                    break
+                else:
+                    destImage[i][j] = True
+        '''      
         # TODO-BLOCK-END
 
         return destImage
@@ -550,8 +589,10 @@ class RatioFeatureMatcher(FeatureMatcher):
             queryIdx = i
             #找到最小的下标
             trainIdx1 = np.argmin(value)
-            #将最小的元素删除
-            temp = np.delete(value, trainIdx1)
+            #将最小的元素值变为最大值
+            temp = value.copy()
+            maxValue = np.argmax(value)
+            temp[trainIdx1] = maxValue
             #找到次小的下标
             trainIdx2 = np.argmin(temp)
             #计算比率
