@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}",
+                "C:\\Program Files\\mingw64\\bin",
+                "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\include",
+                "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\include\\GL",
+                "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\lib"
+
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",//可以将链接库放在工作目录下
+                    "C:\\Program Files\\mingw64\\bin",
+                    "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\include",
+                    "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\include\\GL",
+                    "C:\\Program Files\\mingw64\\x86_64-w64-mingw32\\lib"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
