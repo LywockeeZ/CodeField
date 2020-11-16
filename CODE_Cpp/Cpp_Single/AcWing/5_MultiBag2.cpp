@@ -1,0 +1,48 @@
+#include <iostream>
+
+using namespace std;
+
+//1000 * log2(2000)
+const int N = 15000;
+
+int f[N], v[N], w[N], s[N];
+int n, m;
+
+int main()
+{
+    cin >> n >> m;
+    
+    int cnt;
+    for(int i = 1; i <= n; i++) 
+    {
+        int a, b, s;
+        cin >> a >> b >> s;
+        
+        int k = 1;
+        while(k <= s)
+        {
+            cnt++;
+            //存储分解出物体的体积与价值
+            v[cnt] = a * k;
+            w[cnt] = b * k;
+            s -= k;
+            k *= 2;
+        }
+        if(s > 0)
+        {
+            cnt++;
+            v[cnt] = a * s;
+            w[cnt] = b * s;
+        }
+    }
+    
+    //对分解后的所有物品进行01背包选择
+    n = cnt;
+    for(int i = 1; i <= n; i++)
+        for(int j = m; j >= v[i]; j--)
+            f[j] = max(f[j], f[j - v[i]] + w[i]);
+            
+    cout << f[m];
+    
+    return 0;
+}
