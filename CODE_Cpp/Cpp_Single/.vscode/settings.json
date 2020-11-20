@@ -3,5 +3,6 @@
         "vector": "cpp",
         "utility": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }
