@@ -1,0 +1,98 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Test",
+            "request": "launch",
+            "mainClass": "SortCompare.Test",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - QuickSortWith3Way",
+            "request": "launch",
+            "mainClass": "SortCompare.QuickSortWith3Way",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - QuickSort",
+            "request": "launch",
+            "mainClass": "SortCompare.QuickSort",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BUMergeSort",
+            "request": "launch",
+            "mainClass": "SortCompare.BUMergeSort",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TPMergeSort",
+            "request": "launch",
+            "mainClass": "SortCompare.TPMergeSort",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - InsertSort",
+            "request": "launch",
+            "mainClass": "SortCompare.InsertSort",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - PercolationStats",
+            "request": "launch",
+            "mainClass": "Percolation.PercolationStats",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Percolation",
+            "request": "launch",
+            "mainClass": "Percolation.Percolation",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Hello",
+            "request": "launch",
+            "mainClass": "Hello",
+            "projectName": "Algorithm_25855416"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-App<Algorithm_f7f24996>",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "Algorithm_f7f24996"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Hello<Algorithm_f7f24996>",
+            "request": "launch",
+            "mainClass": "Hello",
+            "projectName": "Algorithm_f7f24996"
+        }
+    ]
+}
