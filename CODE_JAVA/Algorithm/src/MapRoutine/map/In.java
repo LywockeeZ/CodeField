@@ -28,7 +28,7 @@
  *  Second line.
  *
  *************************************************************************/
-package MapRoutine;
+package MapRoutine.map;
 
 
 import java.net.URLConnection;
