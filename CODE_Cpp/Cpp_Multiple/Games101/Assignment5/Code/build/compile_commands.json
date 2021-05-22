@@ -1,0 +1,17 @@
+[
+{
+  "directory": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\X86_64~2.EXE   -g -Wall -Wextra -pedantic -Wshadow -Wreturn-type -fsanitize=undefined -std=gnu++17 -o CMakeFiles\\RayTracing.dir\\main.cpp.obj -c J:\\CodeField\\CODE_Cpp\\Cpp_Multiple\\Games101\\Assignment5\\Code\\main.cpp",
+  "file": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/main.cpp"
+},
+{
+  "directory": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\X86_64~2.EXE   -g -Wall -Wextra -pedantic -Wshadow -Wreturn-type -fsanitize=undefined -std=gnu++17 -o CMakeFiles\\RayTracing.dir\\Scene.cpp.obj -c J:\\CodeField\\CODE_Cpp\\Cpp_Multiple\\Games101\\Assignment5\\Code\\Scene.cpp",
+  "file": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/Scene.cpp"
+},
+{
+  "directory": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\X86_64~2.EXE   -g -Wall -Wextra -pedantic -Wshadow -Wreturn-type -fsanitize=undefined -std=gnu++17 -o CMakeFiles\\RayTracing.dir\\Renderer.cpp.obj -c J:\\CodeField\\CODE_Cpp\\Cpp_Multiple\\Games101\\Assignment5\\Code\\Renderer.cpp",
+  "file": "J:/CodeField/CODE_Cpp/Cpp_Multiple/Games101/Assignment5/Code/Renderer.cpp"
+}
+]
